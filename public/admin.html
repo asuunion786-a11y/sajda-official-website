@@ -186,6 +186,22 @@ function renderList(section){
   container.innerHTML = items.map((item, idx) => {
     const fields = fieldDefs[section].map(f => {
       const val = (item[f.k] || '').toString().replace(/"/g,'&quot;');
+
+      if (section === 'publications' && f.k === 'cover'){
+        const preview = item.cover
+          ? `<img src="${esc(item.cover)}" alt="" style="width:70px; height:90px; object-fit:cover; border-radius:4px; border:1px solid #D3ECDD; margin-top:8px; display:block;">`
+          : '';
+        return `<div class="field">
+          <label>${f.label}</label>
+          <input data-section="${section}" data-idx="${idx}" data-key="${f.k}" value="${val}" id="cover-url-${idx}" placeholder="Or paste an image URL">
+          <div style="margin-top:8px;">
+            <input type="file" accept="image/*" onchange="uploadCover(this, ${idx})">
+            <span class="status-msg" id="cover-status-${idx}"></span>
+          </div>
+          <div id="cover-preview-${idx}">${preview}</div>
+        </div>`;
+      }
+
       return f.area
         ? `<div class="field"><label>${f.label}</label><textarea data-section="${section}" data-idx="${idx}" data-key="${f.k}">${item[f.k] || ''}</textarea></div>`
         : `<div class="field"><label>${f.label}</label><input data-section="${section}" data-idx="${idx}" data-key="${f.k}" value="${val}"></div>`;
@@ -195,6 +211,46 @@ function renderList(section){
       ${fields}
     </div>`;
   }).join('') || '<p style="color:#75705F; margin-bottom:14px;">Nothing added yet.</p>';
+}
+
+function esc(s){
+  const d = document.createElement('div');
+  d.textContent = s == null ? '' : s;
+  return d.innerHTML;
+}
+
+async function uploadCover(inputEl, idx){
+  const file = inputEl.files[0];
+  if (!file) return;
+  const statusEl = document.getElementById('cover-status-' + idx);
+  statusEl.textContent = 'Uploading…';
+  statusEl.classList.remove('error');
+
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try{
+    const res = await fetch('/api/upload', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token },
+      body: formData
+    });
+    const data = await res.json();
+    if (!res.ok){
+      statusEl.textContent = data.error || 'Upload failed';
+      statusEl.classList.add('error');
+      return;
+    }
+    content.publications[idx].cover = data.url;
+    document.getElementById('cover-url-' + idx).value = data.url;
+    document.getElementById('cover-preview-' + idx).innerHTML =
+      `<img src="${data.url}" alt="" style="width:70px; height:90px; object-fit:cover; border-radius:4px; border:1px solid #D3ECDD; margin-top:8px; display:block;">`;
+    statusEl.textContent = 'Uploaded ✓';
+    setTimeout(() => statusEl.textContent = '', 2000);
+  }catch(e){
+    statusEl.textContent = 'Could not reach the server.';
+    statusEl.classList.add('error');
+  }
 }
 
 function addEntry(section){
