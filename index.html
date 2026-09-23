@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SAJDA — Jamia Nooriyya</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="brand-wrap">
+      <img src="assets/logo.png" alt="SAJDA logo" width="40" height="40" style="border-radius:8px; background:#fff; padding:3px; display:block;">
+      <div class="brand">SAJDA<small>Jamia Nooriyya · Faizabad-Pattikkad</small></div>
+    </div>
+    <div class="nav-links" id="navLinks">
+      <a href="#about">About</a>
+      <a href="#activities">Activities</a>
+      <a href="#programs">Programs</a>
+      <a href="#achievements">Achievements</a>
+      <a href="#publications">Publications</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <button id="menu-btn" aria-label="Menu">☰</button>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow-badge">Since Jamia Nooriyya, Pattikkad · Kerala</span>
+    <h1>SAJDA — the <em>Students' Association</em> of Jamia Nooriyya for Devoted Activities</h1>
+    <p class="lead">The official student union of Jamia Nooriyya Arabiyya, coordinating student conclaves, programs, and activities for the college community.</p>
+    <div class="cta-row">
+      <a href="#activities" class="btn btn-solid">Explore Activities</a>
+      <a href="#contact" class="btn btn-outline">Get in Touch</a>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap about-grid">
+    <div>
+      <div class="section-head" style="margin-bottom:24px;">
+        <span class="tag">About Sajda</span>
+        <h2>A student union rooted in Jamia Nooriyya</h2>
+      </div>
+      <p id="about-story">Loading…</p>
+    </div>
+    <div id="about-facts"></div>
+  </div>
+</section>
+
+<section id="activities">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">What We Do</span>
+      <h2>Activities</h2>
+      <p>Sajda's regular activities — events, meets, and gatherings.</p>
+    </div>
+    <div class="card-grid" id="activities-grid"></div>
+  </div>
+</section>
+
+<section id="programs" style="background:var(--white);">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">Structured Initiatives</span>
+      <h2>Programs</h2>
+      <p>Sajda's ongoing programs and committees.</p>
+    </div>
+    <div class="card-grid" id="programs-grid"></div>
+  </div>
+</section>
+
+<section id="achievements">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">Milestones</span>
+      <h2>Achievements</h2>
+      <p>Notable recognitions and milestones.</p>
+    </div>
+    <div class="timeline" id="achievements-list"></div>
+  </div>
+</section>
+
+<section id="publications">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">In Print</span>
+      <h2>Publications</h2>
+      <p>Magazines, journals, or souvenirs released by Sajda.</p>
+    </div>
+    <div class="pub-grid" id="publications-grid"></div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">Reach Us</span>
+      <h2>Contact Sajda</h2>
+      <p>For queries, collaborations, or press, reach the Sajda State Committee directly.</p>
+    </div>
+    <div class="contact-grid" id="contact-grid"></div>
+  </div>
+</section>
+
+<footer>
+  © <span id="year"></span> SAJDA — Students' Association of Jamia Nooriyya for Devoted Activities.
+</footer>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+const btn = document.getElementById('menu-btn');
+const links = document.getElementById('navLinks');
+btn.addEventListener('click', () => links.classList.toggle('open'));
+links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
+
+function esc(s){
+  const d = document.createElement('div');
+  d.textContent = s == null ? '' : s;
+  return d.innerHTML;
+}
+
+async function loadContent(){
+  try{
+    const res = await fetch('/api/content');
+    const data = await res.json();
+
+    document.getElementById('about-story').innerHTML = esc(data.about?.story || '').replace(/\n/g,'<br><br>');
+    document.getElementById('about-facts').innerHTML = `
+      <div class="fact-card"><div class="k">Full Name</div><div class="v">${esc(data.about?.fullName)}</div></div>
+      <div class="fact-card"><div class="k">Institution</div><div class="v">${esc(data.about?.institution)}</div></div>
+      <div class="fact-card"><div class="k">Current Term</div><div class="v">${esc(data.about?.term)}</div></div>
+    `;
+
+    const actGrid = document.getElementById('activities-grid');
+    actGrid.innerHTML = (data.activities || []).length
+      ? data.activities.map(a => `<div class="card"><h3>${esc(a.title)}</h3><p>${esc(a.description)}</p></div>`).join('')
+      : '<p style="color:#75705F;">Activities will appear here once added.</p>';
+
+    const progGrid = document.getElementById('programs-grid');
+    progGrid.innerHTML = (data.programs || []).length
+      ? data.programs.map(p => `<div class="card"><h3>${esc(p.title)}</h3><p>${esc(p.description)}</p></div>`).join('')
+      : '<p style="color:#75705F;">Programs will appear here once added.</p>';
+
+    const achList = document.getElementById('achievements-list');
+    achList.innerHTML = (data.achievements || []).length
+      ? data.achievements.map(a => `<div class="item"><h3>${esc(a.year)} — ${esc(a.title)}</h3><p>${esc(a.description)}</p></div>`).join('')
+      : '<p style="color:#75705F;">Achievements will appear here once added.</p>';
+
+    const pubGrid = document.getElementById('publications-grid');
+    pubGrid.innerHTML = (data.publications || []).length
+      ? data.publications.map(p => {
+          const cover = p.cover
+            ? `<img src="${esc(p.cover)}" alt="${esc(p.title)}">`
+            : `<div style="aspect-ratio:3/4; display:flex; align-items:center; justify-content:center; color:#9FD3B6; font-size:.8rem;">No cover</div>`;
+          const inner = `${cover}<div class="pub-title">${esc(p.title)}</div>`;
+          return p.link
+            ? `<a class="pub" href="${esc(p.link)}" target="_blank" rel="noopener">${inner}</a>`
+            : `<div class="pub">${inner}</div>`;
+        }).join('')
+      : '<p style="color:#5E8B71;">Publications will appear here once added.</p>';
+
+    document.getElementById('contact-grid').innerHTML = `
+      <div class="contact-card"><div class="k">Phone</div><div class="v"><a href="tel:${esc((data.contact?.phone||'').replace(/\s+/g,''))}">${esc(data.contact?.phone)}</a></div></div>
+      <div class="contact-card"><div class="k">Email</div><div class="v"><a href="mailto:${esc(data.contact?.email)}">${esc(data.contact?.email)}</a></div></div>
+      <div class="contact-card"><div class="k">Address</div><div class="v">${esc(data.contact?.address)}</div></div>
+    `;
+  }catch(e){
+    console.error('Failed to load content', e);
+  }
+}
+loadContent();
+</script>
+</body>
+</html>

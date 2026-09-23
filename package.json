@@ -1,0 +1,16 @@
+{
+  "name": "sajda-site",
+  "version": "1.0.0",
+  "description": "SAJDA (Jamia Nooriyya) public website with password-protected admin panel",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
