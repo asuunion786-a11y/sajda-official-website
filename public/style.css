@@ -34,6 +34,7 @@ nav{max-width:1100px; margin:0 auto; padding:14px 24px; display:flex; align-item
 
 /* ---- Hero ---- */
 .hero{position:relative; overflow:hidden; color:var(--green-900); background:linear-gradient(180deg, var(--green-100) 0%, var(--white) 70%); padding:120px 24px 90px; text-align:center;}
+.hero .logo-bg{position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:min(60vw,520px); height:auto; opacity:.5; filter:blur(4px); mix-blend-mode:multiply; pointer-events:none; z-index:0;}
 .hero-inner{position:relative; z-index:1; max-width:760px; margin:0 auto;}
 .eyebrow-badge{display:inline-block; border:1px solid var(--green-500); color:var(--green-700); border-radius:999px; padding:6px 18px; font-size:.8rem; margin-bottom:26px;}
 .hero h1{font-size:clamp(2.4rem,6vw,4rem); line-height:1.15; margin-bottom:18px; color:var(--green-900);}
