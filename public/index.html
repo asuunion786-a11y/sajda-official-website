@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>SAJDA Admin</title>
+<title>SAJDA — Jamia Nooriyya</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -13,205 +13,112 @@
 <header>
   <nav>
     <div class="brand-wrap">
-      <img src="assets/logo.png" alt="SAJDA logo" width="36" height="36" style="border-radius:8px; background:#fff; padding:3px;">
-      <div class="brand" style="font-size:1.1rem;">SAJDA<small>Admin Panel</small></div>
+      <img src="assets/logo.png" alt="SAJDA logo" width="40" height="40" style="border-radius:8px; background:#fff; padding:3px; display:block;">
+      <div class="brand">SAJDA<small>Jamia Nooriyya · Faizabad-Pattikkad</small></div>
     </div>
-    <div id="logout-wrap" style="display:none;">
-      <button class="btn btn-outline" style="color:#EAF6EF; border-color:#EAF6EF; padding:8px 18px;" id="logout-btn">Log out</button>
+    <div class="nav-links" id="navLinks">
+      <a href="#about">About</a>
+      <a href="#activities">Activities</a>
+      <a href="#programs">Programs</a>
+      <a href="#achievements">Achievements</a>
+      <a href="#publications">Publications</a>
+      <a href="#contact">Contact</a>
     </div>
+    <button id="menu-btn" aria-label="Menu">☰</button>
   </nav>
 </header>
 
-<div id="login-screen" class="login-box">
-  <h2>Admin Login</h2>
-  <div class="field">
-    <label>Username</label>
-    <input type="text" id="login-username" autocomplete="username">
-  </div>
-  <div class="field">
-    <label>Password</label>
-    <input type="password" id="login-password" autocomplete="current-password">
-  </div>
-  <button class="btn btn-solid" id="login-btn" style="width:100%;">Log In</button>
-  <p class="status-msg error" id="login-error" style="margin-top:12px;"></p>
-</div>
-
-<div id="admin-app" class="admin-wrap" style="display:none;">
-  <div class="tabs">
-    <button class="tab-btn active" data-tab="about">About</button>
-    <button class="tab-btn" data-tab="activities">Activities</button>
-    <button class="tab-btn" data-tab="programs">Programs</button>
-    <button class="tab-btn" data-tab="achievements">Achievements</button>
-    <button class="tab-btn" data-tab="publications">Publications</button>
-    <button class="tab-btn" data-tab="contact">Contact</button>
-  </div>
-
-  <!-- ABOUT -->
-  <div class="tab-panel active" id="panel-about">
-    <div class="field"><label>Full Name</label><input id="about-fullName"></div>
-    <div class="field"><label>Institution</label><input id="about-institution"></div>
-    <div class="field"><label>Current Term</label><input id="about-term"></div>
-    <div class="field"><label>Story</label><textarea id="about-story" style="min-height:180px;"></textarea></div>
-    <div class="save-row">
-      <button class="btn btn-solid" onclick="saveSection('about')">Save</button>
-      <span class="status-msg" id="status-about"></span>
+<section class="hero">
+  <img class="logo-bg" src="assets/logo.png" alt="" aria-hidden="true">
+  <div class="hero-inner">
+    <span class="eyebrow-badge">Since Jamia Nooriyya, Pattikkad · Kerala</span>
+    <h1>SAJDA — the <em>Students' Association</em> of Jamia Nooriyya for Devoted Activities</h1>
+    <p class="lead">The official student union of Jamia Nooriyya Arabiyya, coordinating student conclaves, programs, and activities for the college community.</p>
+    <div class="cta-row">
+      <a href="#activities" class="btn btn-solid">Explore Activities</a>
+      <a href="#contact" class="btn btn-outline">Get in Touch</a>
     </div>
   </div>
+</section>
 
-  <!-- ACTIVITIES -->
-  <div class="tab-panel" id="panel-activities">
-    <div id="activities-list"></div>
-    <button class="add-btn" onclick="addEntry('activities')">+ Add activity</button>
-    <div class="save-row">
-      <button class="btn btn-solid" onclick="saveSection('activities')">Save</button>
-      <span class="status-msg" id="status-activities"></span>
+<section id="about">
+  <div class="wrap about-grid">
+    <div>
+      <div class="section-head" style="margin-bottom:24px;">
+        <span class="tag">About Sajda</span>
+        <h2>A student union rooted in Jamia Nooriyya</h2>
+      </div>
+      <p id="about-story">Loading…</p>
     </div>
+    <div id="about-facts"></div>
   </div>
+</section>
 
-  <!-- PROGRAMS -->
-  <div class="tab-panel" id="panel-programs">
-    <div id="programs-list"></div>
-    <button class="add-btn" onclick="addEntry('programs')">+ Add program</button>
-    <div class="save-row">
-      <button class="btn btn-solid" onclick="saveSection('programs')">Save</button>
-      <span class="status-msg" id="status-programs"></span>
+<section id="activities">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">What We Do</span>
+      <h2>Activities</h2>
+      <p>Sajda's regular activities — events, meets, and gatherings.</p>
     </div>
+    <div class="card-grid" id="activities-grid"></div>
   </div>
+</section>
 
-  <!-- ACHIEVEMENTS -->
-  <div class="tab-panel" id="panel-achievements">
-    <div id="achievements-list"></div>
-    <button class="add-btn" onclick="addEntry('achievements')">+ Add achievement</button>
-    <div class="save-row">
-      <button class="btn btn-solid" onclick="saveSection('achievements')">Save</button>
-      <span class="status-msg" id="status-achievements"></span>
+<section id="programs" style="background:var(--white);">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">Structured Initiatives</span>
+      <h2>Programs</h2>
+      <p>Sajda's ongoing programs and committees.</p>
     </div>
+    <div class="card-grid" id="programs-grid"></div>
   </div>
+</section>
 
-  <!-- PUBLICATIONS -->
-  <div class="tab-panel" id="panel-publications">
-    <div id="publications-list"></div>
-    <button class="add-btn" onclick="addEntry('publications')">+ Add publication</button>
-    <div class="save-row">
-      <button class="btn btn-solid" onclick="saveSection('publications')">Save</button>
-      <span class="status-msg" id="status-publications"></span>
+<section id="achievements">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">Milestones</span>
+      <h2>Achievements</h2>
+      <p>Notable recognitions and milestones.</p>
     </div>
+    <div class="timeline" id="achievements-list"></div>
   </div>
+</section>
 
-  <!-- CONTACT -->
-  <div class="tab-panel" id="panel-contact">
-    <div class="field"><label>Phone</label><input id="contact-phone"></div>
-    <div class="field"><label>Email</label><input id="contact-email"></div>
-    <div class="field"><label>Address</label><input id="contact-address"></div>
-    <div class="save-row">
-      <button class="btn btn-solid" onclick="saveSection('contact')">Save</button>
-      <span class="status-msg" id="status-contact"></span>
+<section id="publications">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">In Print</span>
+      <h2>Publications</h2>
+      <p>Magazines, journals, or souvenirs released by Sajda.</p>
     </div>
+    <div class="pub-grid" id="publications-grid"></div>
   </div>
-</div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">Reach Us</span>
+      <h2>Contact Sajda</h2>
+      <p>For queries, collaborations, or press, reach the Sajda State Committee directly.</p>
+    </div>
+    <div class="contact-grid" id="contact-grid"></div>
+  </div>
+</section>
+
+<footer>
+  © <span id="year"></span> SAJDA — Students' Association of Jamia Nooriyya for Devoted Activities.
+</footer>
 
 <script>
-let content = null;
-let token = localStorage.getItem('sajda_admin_token') || '';
-
-const fieldDefs = {
-  activities: [{k:'title', label:'Title'}, {k:'description', label:'Description', area:true}],
-  programs: [{k:'title', label:'Title'}, {k:'description', label:'Description', area:true}],
-  achievements: [{k:'year', label:'Year'}, {k:'title', label:'Title'}, {k:'description', label:'Description', area:true}],
-  publications: [{k:'title', label:'Title'}, {k:'cover', label:'Cover image URL (optional)'}, {k:'link', label:'Link (optional)'}]
-};
-
-document.querySelectorAll('.tab-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
-  });
-});
-
-document.getElementById('login-btn').addEventListener('click', login);
-document.getElementById('logout-btn').addEventListener('click', () => {
-  localStorage.removeItem('sajda_admin_token');
-  location.reload();
-});
-
-async function login(){
-  const username = document.getElementById('login-username').value;
-  const password = document.getElementById('login-password').value;
-  const errEl = document.getElementById('login-error');
-  errEl.textContent = '';
-  try{
-    const res = await fetch('/api/login', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({username, password})
-    });
-    const data = await res.json();
-    if (!res.ok) { errEl.textContent = data.error || 'Login failed'; return; }
-    token = data.token;
-    localStorage.setItem('sajda_admin_token', token);
-    showApp();
-  }catch(e){
-    errEl.textContent = 'Could not reach the server.';
-  }
-}
-
-async function showApp(){
-  document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('admin-app').style.display = 'block';
-  document.getElementById('logout-wrap').style.display = 'block';
-  await loadContent();
-}
-
-async function loadContent(){
-  const res = await fetch('/api/content');
-  content = await res.json();
-
-  document.getElementById('about-fullName').value = content.about?.fullName || '';
-  document.getElementById('about-institution').value = content.about?.institution || '';
-  document.getElementById('about-term').value = content.about?.term || '';
-  document.getElementById('about-story').value = content.about?.story || '';
-
-  document.getElementById('contact-phone').value = content.contact?.phone || '';
-  document.getElementById('contact-email').value = content.contact?.email || '';
-  document.getElementById('contact-address').value = content.contact?.address || '';
-
-  ['activities','programs','achievements','publications'].forEach(renderList);
-}
-
-function renderList(section){
-  const container = document.getElementById(section + '-list');
-  const items = content[section] || [];
-  container.innerHTML = items.map((item, idx) => {
-    const fields = fieldDefs[section].map(f => {
-      const val = (item[f.k] || '').toString().replace(/"/g,'&quot;');
-
-      if (section === 'publications' && f.k === 'cover'){
-        const preview = item.cover
-          ? `<img src="${esc(item.cover)}" alt="" style="width:70px; height:90px; object-fit:cover; border-radius:4px; border:1px solid #D3ECDD; margin-top:8px; display:block;">`
-          : '';
-        return `<div class="field">
-          <label>${f.label}</label>
-          <input data-section="${section}" data-idx="${idx}" data-key="${f.k}" value="${val}" id="cover-url-${idx}" placeholder="Or paste an image URL">
-          <div style="margin-top:8px;">
-            <input type="file" accept="image/*" onchange="uploadCover(this, ${idx})">
-            <span class="status-msg" id="cover-status-${idx}"></span>
-          </div>
-          <div id="cover-preview-${idx}">${preview}</div>
-        </div>`;
-      }
-
-      return f.area
-        ? `<div class="field"><label>${f.label}</label><textarea data-section="${section}" data-idx="${idx}" data-key="${f.k}">${item[f.k] || ''}</textarea></div>`
-        : `<div class="field"><label>${f.label}</label><input data-section="${section}" data-idx="${idx}" data-key="${f.k}" value="${val}"></div>`;
-    }).join('');
-    return `<div class="entry-card">
-      <button class="remove-btn" onclick="removeEntry('${section}', ${idx})">Remove</button>
-      ${fields}
-    </div>`;
-  }).join('') || '<p style="color:#75705F; margin-bottom:14px;">Nothing added yet.</p>';
-}
+document.getElementById('year').textContent = new Date().getFullYear();
+const btn = document.getElementById('menu-btn');
+const links = document.getElementById('navLinks');
+btn.addEventListener('click', () => links.classList.toggle('open'));
+links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
 
 function esc(s){
   const d = document.createElement('div');
@@ -219,112 +126,56 @@ function esc(s){
   return d.innerHTML;
 }
 
-async function uploadCover(inputEl, idx){
-  const file = inputEl.files[0];
-  if (!file) return;
-  const statusEl = document.getElementById('cover-status-' + idx);
-  statusEl.textContent = 'Uploading…';
-  statusEl.classList.remove('error');
-
-  const formData = new FormData();
-  formData.append('file', file);
-
+async function loadContent(){
   try{
-    const res = await fetch('/api/upload', {
-      method: 'POST',
-      headers: { 'Authorization': 'Bearer ' + token },
-      body: formData
-    });
+    const res = await fetch('/api/content');
     const data = await res.json();
-    if (!res.ok){
-      statusEl.textContent = data.error || 'Upload failed';
-      statusEl.classList.add('error');
-      return;
-    }
-    content.publications[idx].cover = data.url;
-    document.getElementById('cover-url-' + idx).value = data.url;
-    document.getElementById('cover-preview-' + idx).innerHTML =
-      `<img src="${data.url}" alt="" style="width:70px; height:90px; object-fit:cover; border-radius:4px; border:1px solid #D3ECDD; margin-top:8px; display:block;">`;
-    statusEl.textContent = 'Uploaded ✓';
-    setTimeout(() => statusEl.textContent = '', 2000);
+
+    document.getElementById('about-story').innerHTML = esc(data.about?.story || '').replace(/\n/g,'<br><br>');
+    document.getElementById('about-facts').innerHTML = `
+      <div class="fact-card"><div class="k">Full Name</div><div class="v">${esc(data.about?.fullName)}</div></div>
+      <div class="fact-card"><div class="k">Institution</div><div class="v">${esc(data.about?.institution)}</div></div>
+      <div class="fact-card"><div class="k">Current Term</div><div class="v">${esc(data.about?.term)}</div></div>
+    `;
+
+    const actGrid = document.getElementById('activities-grid');
+    actGrid.innerHTML = (data.activities || []).length
+      ? data.activities.map(a => `<div class="card"><h3>${esc(a.title)}</h3><p>${esc(a.description)}</p></div>`).join('')
+      : '<p style="color:#75705F;">Activities will appear here once added.</p>';
+
+    const progGrid = document.getElementById('programs-grid');
+    progGrid.innerHTML = (data.programs || []).length
+      ? data.programs.map(p => `<div class="card"><h3>${esc(p.title)}</h3><p>${esc(p.description)}</p></div>`).join('')
+      : '<p style="color:#75705F;">Programs will appear here once added.</p>';
+
+    const achList = document.getElementById('achievements-list');
+    achList.innerHTML = (data.achievements || []).length
+      ? data.achievements.map(a => `<div class="item"><h3>${esc(a.year)} — ${esc(a.title)}</h3><p>${esc(a.description)}</p></div>`).join('')
+      : '<p style="color:#75705F;">Programs will appear here once added.</p>';
+
+    const pubGrid = document.getElementById('publications-grid');
+    pubGrid.innerHTML = (data.publications || []).length
+      ? data.publications.map(p => {
+          const cover = p.cover
+            ? `<img src="${esc(p.cover)}" alt="${esc(p.title)}">`
+            : `<div style="aspect-ratio:3/4; display:flex; align-items:center; justify-content:center; color:#9FD3B6; font-size:.8rem;">No cover</div>`;
+          const inner = `${cover}<div class="pub-title">${esc(p.title)}</div>`;
+          return p.link
+            ? `<a class="pub" href="${esc(p.link)}" target="_blank" rel="noopener">${inner}</a>`
+            : `<div class="pub">${inner}</div>`;
+        }).join('')
+      : '<p style="color:#5E8B71;">Publications will appear here once added.</p>';
+
+    document.getElementById('contact-grid').innerHTML = `
+      <div class="contact-card"><div class="k">Phone</div><div class="v"><a href="tel:${esc((data.contact?.phone||'').replace(/\s+/g,''))}">${esc(data.contact?.phone)}</a></div></div>
+      <div class="contact-card"><div class="k">Email</div><div class="v"><a href="mailto:${esc(data.contact?.email)}">${esc(data.contact?.email)}</a></div></div>
+      <div class="contact-card"><div class="k">Address</div><div class="v">${esc(data.contact?.address)}</div></div>
+    `;
   }catch(e){
-    statusEl.textContent = 'Could not reach the server.';
-    statusEl.classList.add('error');
+    console.error('Failed to load content', e);
   }
 }
-
-function addEntry(section){
-  content[section] = content[section] || [];
-  const blank = {};
-  fieldDefs[section].forEach(f => blank[f.k] = '');
-  content[section].push(blank);
-  renderList(section);
-}
-
-function removeEntry(section, idx){
-  content[section].splice(idx, 1);
-  renderList(section);
-}
-
-function collectListFromDOM(section){
-  const items = content[section] || [];
-  document.querySelectorAll(`[data-section="${section}"]`).forEach(el => {
-    const idx = Number(el.dataset.idx);
-    const key = el.dataset.key;
-    if (items[idx]) items[idx][key] = el.value;
-  });
-  return items;
-}
-
-async function saveSection(section){
-  const statusEl = document.getElementById('status-' + section);
-  statusEl.textContent = 'Saving…';
-  statusEl.classList.remove('error');
-
-  let payload;
-  if (section === 'about'){
-    payload = {
-      fullName: document.getElementById('about-fullName').value,
-      institution: document.getElementById('about-institution').value,
-      term: document.getElementById('about-term').value,
-      story: document.getElementById('about-story').value
-    };
-  } else if (section === 'contact'){
-    payload = {
-      phone: document.getElementById('contact-phone').value,
-      email: document.getElementById('contact-email').value,
-      address: document.getElementById('contact-address').value
-    };
-  } else {
-    payload = collectListFromDOM(section);
-  }
-
-  try{
-    const res = await fetch('/api/content/' + section, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
-      },
-      body: JSON.stringify(payload)
-    });
-    const data = await res.json();
-    if (!res.ok){
-      statusEl.textContent = data.error || 'Save failed';
-      statusEl.classList.add('error');
-      if (res.status === 401){ localStorage.removeItem('sajda_admin_token'); setTimeout(() => location.reload(), 1200); }
-      return;
-    }
-    content = data.content;
-    statusEl.textContent = 'Saved ✓';
-    setTimeout(() => statusEl.textContent = '', 2000);
-  }catch(e){
-    statusEl.textContent = 'Could not reach the server.';
-    statusEl.classList.add('error');
-  }
-}
-
-if (token){ showApp(); }
+loadContent();
 </script>
 </body>
 </html>
