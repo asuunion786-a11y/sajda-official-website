@@ -2,6 +2,8 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
+const multer = require('multer');
+const crypto = require('crypto');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -9,6 +11,26 @@ const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'change-me';
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-me';
 const CONTENT_PATH = path.join(__dirname, 'data', 'content.json');
+const UPLOADS_DIR = path.join(__dirname, 'public', 'uploads');
+
+if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, UPLOADS_DIR),
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase();
+    const safeExt = ['.jpg', '.jpeg', '.png', '.webp', '.gif'].includes(ext) ? ext : '.jpg';
+    cb(null, crypto.randomBytes(10).toString('hex') + safeExt);
+  }
+});
+const upload = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+  fileFilter: (req, file, cb) => {
+    const ok = /^image\/(jpeg|png|webp|gif)$/.test(file.mimetype);
+    cb(ok ? null : new Error('Only image files are allowed'), ok);
+  }
+});
 
 app.use(express.json({ limit: '2mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -67,6 +89,15 @@ app.put('/api/content/:section', requireAuth, (req, res) => {
   } catch (e) {
     res.status(500).json({ error: 'Could not save content' });
   }
+});
+
+// --- Admin: upload an image file, get back a URL to use as a cover/logo ---
+app.post('/api/upload', requireAuth, (req, res) => {
+  upload.single('file')(req, res, (err) => {
+    if (err) return res.status(400).json({ error: err.message || 'Upload failed' });
+    if (!req.file) return res.status(400).json({ error: 'No file received' });
+    res.json({ url: '/uploads/' + req.file.filename });
+  });
 });
 
 app.get('/admin', (req, res) => {
